@@ -81,6 +81,10 @@ def create_event(event_dict: dict) -> str:
         body["location"] = event_dict["location"]
     if event_dict.get("description"):
         body["description"] = event_dict["description"]
+    if event_dict.get("_attendee_emails"):
+        body["attendees"] = [{"email": e} for e in event_dict["_attendee_emails"]]
 
-    result = _service().events().insert(calendarId=calendar_id, body=body).execute()
+    result = _service().events().insert(
+        calendarId=calendar_id, body=body, sendUpdates="all"
+    ).execute()
     return result.get("htmlLink", "")

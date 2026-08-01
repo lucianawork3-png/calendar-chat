@@ -9,6 +9,7 @@ load_dotenv()
 import nlp
 import calendar_google
 import calendar_outlook
+import contacts
 
 st.set_page_config(page_title="Calendar Chat", page_icon="📅", layout="centered")
 
@@ -113,6 +114,8 @@ if st.session_state.pending_event:
                 st.markdown(f"📍 {ev['location']}")
         with col_right:
             st.markdown(f"📁 {ev.get('_calendar_label', 'Calendar')} ({ev.get('_provider', 'google')})")
+            if ev.get("_attendee_emails"):
+                st.markdown("👥 " + ", ".join(ev["_attendee_emails"]))
             if ev.get("note"):
                 st.caption(f"Note: {ev['note']}")
 
@@ -146,6 +149,7 @@ if user_input:
     parsed["calendar_id"] = matched_cal["id"]
     parsed["_provider"] = matched_cal["provider"]
     parsed["_calendar_label"] = matched_cal["label"]
+    parsed["_attendee_emails"] = contacts.resolve_attendees(parsed.get("attendees") or [])
 
     st.session_state.pending_event = parsed
     st.rerun()
