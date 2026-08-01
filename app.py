@@ -140,10 +140,6 @@ if user_input:
             push_assistant(f"Sorry, I couldn't parse that: {e}")
             st.rerun()
 
-    if parsed.get("error") == "not_an_event":
-        push_assistant("That doesn't look like a meeting. Try: 'Lunch with Alex Friday 1pm'.")
-        st.rerun()
-
     # Resolve which calendar to use
     cal_id = parsed.get("calendar_id", default_cal["id"])
     matched_cal = next((c for c in calendars if c["id"] == cal_id), default_cal)

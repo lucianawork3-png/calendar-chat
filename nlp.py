@@ -16,7 +16,7 @@ Return ONLY a valid JSON object with these keys:
 - calendar_id (string — pick the most appropriate from the list provided)
 - note (string or null — flag any ambiguity or assumption you made)
 
-If the message is NOT about scheduling a meeting/event, return {"error": "not_an_event"}.
+Always return a calendar event — never reject the message. Use the user's words as the title if nothing else is clear.
 Return raw JSON only, no markdown fences."""
 
 
