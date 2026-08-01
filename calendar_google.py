@@ -10,16 +10,20 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
 def _get_creds() -> Credentials:
-    token_json = os.environ.get("GOOGLE_TOKEN_JSON", "")
-    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON", "")
+    # Read individual fields to avoid JSON-in-TOML encoding issues
+    refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN", "")
+    client_id = os.environ.get("GOOGLE_CLIENT_ID", "")
+    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "")
 
-    if not token_json:
-        raise RuntimeError("GOOGLE_TOKEN_JSON not set")
+    if not refresh_token:
+        raise RuntimeError("GOOGLE_REFRESH_TOKEN not set")
 
-    # Strip whitespace and control characters that can sneak in via Streamlit secrets
-    import re
-    token_json_clean = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', token_json.strip())
-    token_data = json.loads(token_json_clean)
+    token_data = {
+        "refresh_token": refresh_token.strip(),
+        "client_id": client_id.strip(),
+        "client_secret": client_secret.strip(),
+        "token_uri": "https://oauth2.googleapis.com/token",
+    }
     creds = Credentials.from_authorized_user_info(token_data, SCOPES)
 
     if creds.expired and creds.refresh_token:
