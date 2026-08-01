@@ -18,7 +18,7 @@ def _get_creds() -> Credentials:
 
     # Strip whitespace and control characters that can sneak in via Streamlit secrets
     import re
-    token_json_clean = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', token_json.strip())
+    token_json_clean = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', token_json.strip())
     token_data = json.loads(token_json_clean)
     creds = Credentials.from_authorized_user_info(token_data, SCOPES)
 
