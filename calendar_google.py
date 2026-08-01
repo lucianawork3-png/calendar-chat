@@ -84,6 +84,15 @@ def create_event(event_dict: dict) -> str:
     if event_dict.get("_attendee_emails"):
         body["attendees"] = [{"email": e} for e in event_dict["_attendee_emails"]]
 
+    reminder_minutes = event_dict.get("_reminder_minutes", 30)
+    body["reminders"] = {
+        "useDefault": False,
+        "overrides": [
+            {"method": "email", "minutes": reminder_minutes},
+            {"method": "popup", "minutes": reminder_minutes},
+        ],
+    }
+
     result = _service().events().insert(
         calendarId=calendar_id, body=body, sendUpdates="all"
     ).execute()

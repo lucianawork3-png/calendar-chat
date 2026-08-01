@@ -150,6 +150,7 @@ if user_input:
     parsed["_provider"] = matched_cal["provider"]
     parsed["_calendar_label"] = matched_cal["label"]
     parsed["_attendee_emails"] = contacts.resolve_attendees(parsed.get("attendees") or [])
+    parsed["_reminder_minutes"] = parsed.get("reminder_minutes", 30)
 
     st.session_state.pending_event = parsed
     st.rerun()

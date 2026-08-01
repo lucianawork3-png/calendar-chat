@@ -15,6 +15,7 @@ Return ONLY a valid JSON object with these keys:
 - description (string or null)
 - calendar_id (string — pick the most appropriate from the list provided)
 - attendees (array of strings — first names or emails of people mentioned after "with", empty array if none)
+- reminder_minutes (integer — minutes before event to send reminder, default 30, extract from message if mentioned e.g. "remind me 1 hour before" = 60)
 - note (string or null — flag any ambiguity or assumption you made)
 
 Always return a calendar event — never reject the message. Use the user's words as the title if nothing else is clear.
